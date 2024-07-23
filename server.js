@@ -2,16 +2,22 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
+const getRandomInt = max => Math.floor(Math.random() * max);
+
 function sse(req, res) {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
   
   let id = 0;
+  let data;
   
-  res.write('data: Dmitriy\'s data\n');
-  res.write(`last succeed message id: ${++id} \n`);
-  res.write('\n');
+  setInterval(() => {
+    data = getRandomInt(111);
+    res.write(`data: Dmitriy's ${data}\n`);
+    res.write(`last succeed message id: ${++id} \n`);
+    res.write('\n');
+  }, 1000)
 }
 
 http.createServer((req, res) => {
