@@ -10,15 +10,17 @@
 
   <script>
     const eventSource = new EventSource("http://localhost:8080/stream");
+    console.log("Start a stream!");
     const output = document.querySelector('#data');
 
     eventSource.onmessage = (message) => {
       output.textContent += `id: ${message.lastEventId}, data: ${message.data} \n`;
-    }
+    };
 
     eventSource.addEventListener('end-of-stream', () => {
+      console.log("End of the stream");
       eventSource.close();
-    })
+    });
   </script>
 </body>
 </html>

@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const getRandomInt = max => Math.floor(Math.random() * max);
+let data;
 
 function sse(req, res) {
   res.setHeader('Content-Type', 'text/event-stream');
@@ -10,14 +11,14 @@ function sse(req, res) {
   res.setHeader('Connection', 'keep-alive');
   
   let id = 0;
-  let data;
-  
   const interval = setInterval(() => {
     data = getRandomInt(111);
-    res.write(`data: Dmitriy's ${data}\n`);
-    res.write(`id: ${++id} \n`);
-    res.write('\n');
-  }, 1000);
+    if (data !== undefined && data !== "") {
+      res.write(`data: ${data}\n`);
+      res.write(`id: ${++id} \n`);
+      res.write('\n');
+    }
+  }, 3000);
   
   setTimeout(() => {
     clearInterval(interval);
@@ -36,8 +37,14 @@ http.createServer((req, res) => {
     return;
   }
   
+  if (url.pathname === '/send-message') {
+    data = url.searchParams.get('message');
+    res.end(data);
+    return;
+  }
+  
   const fileStream = fs.createReadStream(path.join(__dirname, 'index.html'));
   fileStream.pipe(res);
 }).listen(8080, () => {
-  console.log('server started on the 8080 port')
+  console.log('server started on the 8080 port');
 })
