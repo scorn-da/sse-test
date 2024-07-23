@@ -12,12 +12,20 @@ function sse(req, res) {
   let id = 0;
   let data;
   
-  setInterval(() => {
+  const interval = setInterval(() => {
     data = getRandomInt(111);
     res.write(`data: Dmitriy's ${data}\n`);
     res.write(`id: ${++id} \n`);
     res.write('\n');
-  }, 1000)
+  }, 1000);
+  
+  setTimeout(() => {
+    clearInterval(interval);
+    res.write('event: end-of-stream\n');
+    res.write('data: this is the end\n');
+    res.write('\n');
+    res.end();
+  }, 15000);
 }
 
 http.createServer((req, res) => {

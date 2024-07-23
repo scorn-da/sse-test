@@ -15,6 +15,10 @@
     eventSource.onmessage = (message) => {
       output.textContent += `id: ${message.lastEventId}, data: ${message.data} \n`;
     }
+
+    eventSource.addEventListener('end-of-stream', () => {
+      eventSource.close();
+    })
   </script>
 </body>
 </html>
