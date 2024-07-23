@@ -15,7 +15,7 @@ function sse(req, res) {
   setInterval(() => {
     data = getRandomInt(111);
     res.write(`data: Dmitriy's ${data}\n`);
-    res.write(`last succeed message id: ${++id} \n`);
+    res.write(`id: ${++id} \n`);
     res.write('\n');
   }, 1000)
 }
