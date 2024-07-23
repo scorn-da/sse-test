@@ -6,6 +6,15 @@
 </head>
 <body>
   <h1>A test of the SSE-technology</h1>
+  <output id="data" style="white-space: pre-wrap"></output>
 
+  <script>
+    const eventSource = new EventSource("http://localhost:8080/stream");
+    const output = document.querySelector('#data');
+
+    eventSource.onmessage = (message) => {
+      output.textContent += `id: ${message.lastEventId}, data: ${message.data} \n`;
+    }
+  </script>
 </body>
 </html>
